@@ -114,7 +114,7 @@ namespace
 		// and about 600 two-letter words, total, people will be selective in the passwords
 		// that they keep from this program and attempt to memorize.  If we cut out the
 		// possibility of hard passwords, we save pain in explaining good designs.
-		SKIP dict.erase( std::remove_if( begin( dict ), end( dict ),
+		DOIT dict.erase( std::remove_if( begin( dict ), end( dict ),
 				[]( const auto &x ){ return x.size() < 4; } ), end( dict ) );
 
 		// We shuffle before trim so that we aren't quite sure which words get thrown out.
