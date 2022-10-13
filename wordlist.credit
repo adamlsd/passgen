@@ -1,0 +1,8 @@
+The file `dictionary` used by `passgen` is a slightly modified form of the wordlist found at:
+https://www.wordgamedictionary.com/sowpods/download/sowpods.txt
+
+The same exact list of words can be found in the following git repository under the MIT license:
+https://github.com/jesstess/Scrabble
+
+Thus I conclude it is safe to include this list in a BSD licensed repository.
+
