@@ -176,7 +176,8 @@ try
 	std::ostringstream pws;
 	std::copy( begin( words ), end( words ), std::ostream_iterator< std::string >( pws, " " ) );
 	const std::string password= pws.str();
-	std::cout << password << std::endl;
+	std::cout << "[32m" << password << "[0m" << std::endl;
+	std::cout << "Your password has " << words.size() << " words in its makeup." << std::endl;
 	std::cout << "Your password has " << bits << " bits of entropy in its makeup." << std::endl;
 
 	std::cout << "Your password is roughly equivalent to " << password.size() << " base32 elements" << std::endl;
