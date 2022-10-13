@@ -21,9 +21,6 @@
 #undef DOIT
 #undef DEBUG
 
-const std::uint64_t BITS= 18;
-const std::uint64_t DOMAIN= 1 << BITS;
-
 #define DEBUG SKIP
 #define DOIT if( true )
 #define SKIP if( false )
@@ -33,6 +30,12 @@ using std::end;
 
 namespace
 {
+	namespace C
+	{
+		const std::uint64_t bits= 18;
+		const std::uint64_t domain= 1 << C::bits;
+	}
+
 	class Failure : public std::runtime_error
 	{
 		public:
@@ -81,8 +84,8 @@ namespace
 		if( d.bad() || d.fail() ) throw Failure();
 
 		// We assume that the dictionary is unique -- it reduces load time.
-		safe_vector< std::string > dict{ std::istream_iterator< std::string >( d ),
-				std::istream_iterator< std::string >() };
+		using input_type= std::istream_iterator< std::string >;
+		safe_vector< std::string > dict{ input_type{ d }, input_type{} };
 
 		// dictStat( dict );
 
@@ -123,9 +126,9 @@ namespace
 		std::shuffle( begin( dict ), end( dict ), gen );
 
 		// Make sure that we can reach the expected domain, and trim to that domain.
-		if( ( DOMAIN ) > dict.size() )
+		if( ( C::domain ) > dict.size() )
 				throw Failure( "Dict size: " + boost::lexical_cast< std::string >( dict.size() ) );
-		dict.resize( DOMAIN );
+		dict.resize( C::domain );
 
 		return dict;
 	};
@@ -152,21 +155,21 @@ try
 
 	do
 	{
-		if( bitsInRnd < BITS )
+		if( bitsInRnd < C::bits )
 		{
 			rnd.read( reinterpret_cast< char * >( &randomness ), sizeof( randomness ) );
 			if( rnd.bad() || rnd.fail() || rnd.eof() ) throw Failure();
 			bitsInRnd= sizeof( randomness ) * CHAR_BIT;
 		}
 
-		const auto &word= dict[ randomness % ( DOMAIN ) ];
-		DEBUG std::cout << randomness % ( DOMAIN ) << std::endl;
+		const auto &word= dict[ randomness % ( C::domain ) ];
+		DEBUG std::cout << randomness % ( C::domain ) << std::endl;
 		DEBUG std::cout << word << std::endl;
-		randomness>>= BITS;
+		randomness>>= C::bits;
 		words.push_back( word );
 
-		bitsInRnd-= BITS;
-		bits+= BITS;
+		bitsInRnd-= C::bits;
+		bits+= C::bits;
 	}
 	while( bits < bitsDesired );
 
